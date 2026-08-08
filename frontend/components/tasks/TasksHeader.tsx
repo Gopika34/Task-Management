@@ -1,12 +1,18 @@
-import {PanelLeft} from "lucide-react";
+import { PanelLeft } from "lucide-react";
 
 export default function TasksHeader() {
     return (
-        <div className="flex flex-col border-b border-border gap-4 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
-                <PanelLeft size={14} strokeWidth={2}/>
-                {/* <p className="mt-1 text-sm text-text-secondary">
-                    Manage and organize your work
-                </p> */}
-        </div>
+        <header className="flex h-14 items-center border-b border-border px-6">
+            <div className="flex items-center gap-3 border-r border-border">
+                <button
+                    type="button"
+                    className="rounded-md p-1.5 text-text-secondary hover:bg-surface-muted hover:text-text-primary"
+                    aria-label="Toggle sidebar"
+                >
+                    <PanelLeft size={14} strokeWidth={1.8} />
+                </button>
+
+            </div>
+        </header>
     );
 }

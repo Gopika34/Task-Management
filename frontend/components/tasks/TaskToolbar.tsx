@@ -7,7 +7,13 @@ import {
     Plus,
 } from "lucide-react";
 
-export default function TaskToolbar() {
+type TaskToolbarProps = {
+    onAddTask: () => void;
+};
+
+export default function TaskToolbar({
+    onAddTask,
+}: TaskToolbarProps) {
     return (
         <div className="flex items-center gap-2 justify-between m-3">
 
@@ -47,7 +53,8 @@ export default function TaskToolbar() {
                 {/* Add Task */}
                 <button
                     type="button"
-                    className="flex h-8 items-center gap-1.5 rounded-md bg-black px-3 text-xs font-medium text-white hover:bg-neutral-800"
+                    onClick={onAddTask}
+                    className="flex h-8 items-center gap-1.5 rounded-md bg-black px-3 text-xs font-medium text-white transition-colors hover:bg-neutral-800"
                 >
                     <Plus size={14} strokeWidth={2} />
                     <span>Add Task</span>
