@@ -1,27 +1,19 @@
 import AppShell from "@/components/layout/AppShell";
-import PageHeader from "@/components/layout/PageHeader";
-import Button from "@/components/ui/Button";
+import TaskBoard from "@/components/tasks/TaskBoard";
+import TaskToolbar from "@/components/tasks/TaskToolbar";
+import TasksHeader from "@/components/tasks/TasksHeader";
+import { initialTasks } from "@/components/tasks/task-data";
 
 export default function TasksPage() {
     return (
         <AppShell>
             <div className="min-h-screen bg-background">
-                <PageHeader
-                    title="Tasks"
-                    description="Manage and organize your work"
-                    actions={
-                        <Button>
-                            Add Task
-                        </Button>
-                    }
-                />
+                <TasksHeader />
 
-                <main className="p-6">
-                    <div className="rounded-lg border border-border bg-surface p-6">
-                        <p className="text-sm text-text-secondary">
-                            Your tasks will appear here.
-                        </p>
-                    </div>
+                <TaskToolbar />
+
+                <main className="px-6 py-5">
+                    <TaskBoard tasks={initialTasks} />
                 </main>
             </div>
         </AppShell>
