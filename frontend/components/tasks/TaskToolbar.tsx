@@ -1,37 +1,59 @@
 "use client";
 
-import { Search, SlidersHorizontal } from "lucide-react";
-import { useState } from "react";
-import Button from "@/components/ui/Button";
+import {
+    Search,
+    SlidersHorizontal,
+    Columns3,
+    Plus,
+} from "lucide-react";
 
 export default function TaskToolbar() {
-    const [search, setSearch] = useState("");
-
     return (
-        <div className="flex flex-col gap-3 border-b border-border px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
-            {/* Search */}
-            <div className="relative w-full sm:max-w-xs">
-                <Search
-                    size={16}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted"
-                />
+        <div className="flex items-center gap-2 justify-between m-3">
 
-                <input
-                    type="text"
-                    value={search}
-                    onChange={(event) => setSearch(event.target.value)}
-                    placeholder="Search tasks..."
-                    className="h-9 w-full rounded-md border border-border bg-surface pl-9 pr-3 text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-border-strong"
-                />
+            <h1 className="text-xl font-semibold tracking-tight text-text-primary">
+                Tasks
+            </h1>
+
+            <div className="flex gap-2 items-center">
+
+                {/* Search */}
+                <button
+                    type="button"
+                    className="flex h-8 w-8 items-center justify-center rounded-md border border-border hover:bg-surface-muted"
+                    aria-label="Search tasks"
+                >
+                    <Search size={14} strokeWidth={2} />
+                </button>
+
+                {/* Fields */}
+                <button
+                    type="button"
+                    className="flex h-8 items-center gap-1.5 rounded-md border border-border px-2.5 text-xs hover:bg-surface-muted"
+                >
+                    <Columns3 size={14} strokeWidth={2} />
+                    <span>Fields</span>
+                </button>
+
+                {/* Filter */}
+                <button
+                    type="button"
+                    className="flex h-8 w-8 items-center justify-center rounded-md border border-border hover:bg-surface-muted"
+                    aria-label="Filter tasks"
+                >
+                    <SlidersHorizontal size={14} strokeWidth={2} />
+                </button>
+
+                {/* Add Task */}
+                <button
+                    type="button"
+                    className="flex h-8 items-center gap-1.5 rounded-md bg-black px-3 text-xs font-medium text-white hover:bg-neutral-800"
+                >
+                    <Plus size={14} strokeWidth={2} />
+                    <span>Add Task</span>
+                </button>
             </div>
 
-            {/* Actions */}
-            <div className="flex items-center gap-2">
-                <Button variant="secondary">
-                    <SlidersHorizontal size={15} className="mr-2" />
-                    Filter
-                </Button>
-            </div>
         </div>
     );
 }

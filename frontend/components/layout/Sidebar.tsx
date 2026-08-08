@@ -1,7 +1,8 @@
 import Link from "next/link";
 import {
     CheckSquare,
-    FolderKanban,
+    GalleryVerticalEnd,
+    ChevronsUpDown,
     ChevronDown,
 } from "lucide-react";
 
@@ -14,7 +15,7 @@ const navigationItems = [
     {
         label: "Projects",
         href: "/projects",
-        icon: FolderKanban,
+        icon: GalleryVerticalEnd,
     },
 ];
 
@@ -44,11 +45,12 @@ export default function Sidebar() {
 
                     </div>
 
-                    <ChevronDown
+                    <ChevronsUpDown
                         size={14}
                         strokeWidth={1.8}
                         className="text-text-muted"
                     />
+
 
                 </button>
             </div>
@@ -56,10 +58,16 @@ export default function Sidebar() {
             {/* Navigation */}
             <div className="flex-1 px-3 py-5">
 
-                <p className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-wider text-text-muted">
-                    Workspace
-                </p>
-
+                <div className="flex justify-between">
+                    <p className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-wider text-text-muted">
+                        Workspace
+                    </p>
+                    <ChevronDown
+                        size={14}
+                        strokeWidth={1.8}
+                        className="text-text-muted"
+                    />
+                </div>
                 <nav className="space-y-1">
 
                     {navigationItems.map((item) => {
@@ -72,11 +80,10 @@ export default function Sidebar() {
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className={`flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors ${
-                                    isActive
-                                        ? "bg-surface-muted text-text-primary"
-                                        : "text-text-secondary hover:bg-surface-muted hover:text-text-primary"
-                                }`}
+                                className={`flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors ${isActive
+                                    ? "bg-surface-muted text-text-primary"
+                                    : "text-text-secondary hover:bg-surface-muted hover:text-text-primary"
+                                    }`}
                             >
 
                                 <Icon
