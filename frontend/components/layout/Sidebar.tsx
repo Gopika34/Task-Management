@@ -1,5 +1,10 @@
 import Link from "next/link";
-import { CheckSquare, FolderKanban } from "lucide-react";
+import {
+    CheckSquare,
+    FolderKanban,
+    Settings,
+    UserCircle,
+} from "lucide-react";
 
 const navigationItems = [
     {
@@ -16,27 +21,33 @@ const navigationItems = [
 
 export default function Sidebar() {
     return (
-        <aside className="flex h-screen w-52 flex-col border-r border-gray-200 bg-white">
+        <aside className="flex h-screen w-56 shrink-0 flex-col border-r border-border bg-surface">
             {/* Workspace */}
-            <div className="border-b border-gray-200 px-4 py-4">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-purple-100 text-xs font-semibold text-black">
+            <div className="border-b border-border px-4 py-4">
+                <button className="flex w-full items-center justify-between rounded-md px-1 py-1 text-left hover:bg-surface-muted">
+                    <div className="flex items-center gap-2.5">
+                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-purple-100 text-xs font-semibold text-purple-700">
                             D
                         </div>
 
-                        <span className="text-sm font-medium text-gray-900">
-                            Dexter
-                        </span>
+                        <div className="flex flex-col">
+                            <span className="text-sm font-medium text-text-primary">
+                                Dexter
+                            </span>
+
+                            <span className="text-[11px] text-text-muted">
+                                Workspace
+                            </span>
+                        </div>
                     </div>
 
-                    <span className="text-xs text-gray-400">⌄</span>
-                </div>
+                    <span className="text-xs text-text-muted">⌄</span>
+                </button>
             </div>
 
             {/* Navigation */}
-            <div className="px-3 py-4">
-                <p className="mb-2 px-2 text-[10px] font-medium uppercase tracking-wide text-gray-400">
+            <div className="flex-1 px-3 py-5">
+                <p className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-wider text-text-muted">
                     Workspace
                 </p>
 
@@ -48,15 +59,31 @@ export default function Sidebar() {
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className="flex items-center gap-2 rounded-md px-2 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-text-secondary transition-colors hover:bg-surface-muted hover:text-text-primary"
                             >
-                                <Icon size={15} strokeWidth={1.8} />
+                                <Icon size={16} strokeWidth={1.8} />
 
                                 <span>{item.label}</span>
                             </Link>
                         );
                     })}
                 </nav>
+            </div>
+
+            {/* Bottom navigation */}
+            <div className="border-t border-border px-3 py-3">
+                <Link
+                    href="/profile"
+                    className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-text-secondary hover:bg-surface-muted hover:text-text-primary"
+                >
+                    <UserCircle size={16} strokeWidth={1.8} />
+                    <span>Profile</span>
+                </Link>
+
+                <button className="mt-1 flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-text-secondary hover:bg-surface-muted hover:text-text-primary">
+                    <Settings size={16} strokeWidth={1.8} />
+                    <span>Settings</span>
+                </button>
             </div>
         </aside>
     );
