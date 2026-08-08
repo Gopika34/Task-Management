@@ -12,7 +12,7 @@ export default function TasksPage() {
 
                 <TaskToolbar />
 
-                <main className="px-6 py-5">
+                <main className="overflow-x-auto px-6 py-5">
                     <TaskBoard tasks={initialTasks} />
                 </main>
             </div>

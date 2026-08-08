@@ -14,7 +14,7 @@ export default function TaskColumn({
     tasks,
 }: TaskColumnProps) {
     return (
-        <section className="flex min-w-[280px] flex-1 flex-col">
+        <section className="flex w-[228px] shrink-0 flex-col">
             {/* Column header */}
             <div className="mb-3 flex items-center justify-between">
                 <div className="flex items-center gap-2">

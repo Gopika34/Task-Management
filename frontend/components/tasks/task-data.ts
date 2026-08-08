@@ -1,7 +1,8 @@
 export type TaskStatus =
     | "todo"
     | "in-progress"
-    | "completed";
+    | "completed"
+    | "on-hold";
 
 export type TaskPriority =
     | "low"
@@ -59,5 +60,15 @@ export const initialTasks: Task[] = [
         assignee: "D",
         dueDate: "Aug 10",
         labels: ["Documentation"],
+    },
+    {
+        id: "task-5",
+        title: "Review user feedback",
+        description: "Review feedback and identify improvements.",
+        status: "on-hold",
+        priority: "medium",
+        assignee: "M",
+        dueDate: "Aug 18",
+        labels: ["Research"],
     },
 ];

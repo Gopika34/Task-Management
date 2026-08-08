@@ -14,18 +14,22 @@ const columns: {
             status: "todo",
         },
         {
-            title: "In Progress",
+            title: "Doing",
             status: "in-progress",
         },
         {
             title: "Completed",
             status: "completed",
         },
+        {
+            title: "On Hold",
+            status: "on-hold",
+        },
     ];
 
 export default function TaskBoard({ tasks }: TaskBoardProps) {
     return (
-        <div className="flex gap-4 overflow-x-auto pb-4">
+        <div className="flex w-max min-w-full gap-4 pb-4">
             {columns.map((column) => {
                 const columnTasks = tasks.filter(
                     (task) => task.status === column.status
