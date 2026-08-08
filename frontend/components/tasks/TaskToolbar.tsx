@@ -7,60 +7,58 @@ import {
     Plus,
 } from "lucide-react";
 
-type TaskToolbarProps = {
-    onAddTask: () => void;
-};
-
-export default function TaskToolbar({
-    onAddTask,
-}: TaskToolbarProps) {
+export default function TaskToolbar() {
     return (
-        <div className="flex items-center gap-2 justify-between m-3">
+        <div className="flex items-center gap-2">
+            {/* Search */}
+            <button
+                type="button"
+                aria-label="Search tasks"
+                className="flex h-8 w-8 items-center justify-center rounded-md border border-border text-text-secondary hover:bg-surface-muted"
+            >
+                <Search
+                    size={14}
+                    strokeWidth={1.8}
+                />
+            </button>
 
-            <h1 className="text-xl font-semibold tracking-tight text-text-primary">
-                Tasks
-            </h1>
+            {/* Fields */}
+            <button
+                type="button"
+                className="flex h-8 items-center gap-1.5 rounded-md border border-border px-2.5 text-xs text-text-secondary hover:bg-surface-muted"
+            >
+                <Columns3
+                    size={14}
+                    strokeWidth={1.8}
+                />
 
-            <div className="flex gap-2 items-center">
+                <span>Fields</span>
+            </button>
 
-                {/* Search */}
-                <button
-                    type="button"
-                    className="flex h-8 w-8 items-center justify-center rounded-md border border-border hover:bg-surface-muted"
-                    aria-label="Search tasks"
-                >
-                    <Search size={14} strokeWidth={2} />
-                </button>
+            {/* Filter */}
+            <button
+                type="button"
+                aria-label="Filter tasks"
+                className="flex h-8 w-8 items-center justify-center rounded-md border border-border text-text-secondary hover:bg-surface-muted"
+            >
+                <SlidersHorizontal
+                    size={14}
+                    strokeWidth={1.8}
+                />
+            </button>
 
-                {/* Fields */}
-                <button
-                    type="button"
-                    className="flex h-8 items-center gap-1.5 rounded-md border border-border px-2.5 text-xs hover:bg-surface-muted"
-                >
-                    <Columns3 size={14} strokeWidth={2} />
-                    <span>Fields</span>
-                </button>
+            {/* Add Task */}
+            <button
+                type="button"
+                className="flex h-8 items-center gap-1.5 rounded-md bg-black px-3 text-xs font-medium text-white hover:bg-neutral-800"
+            >
+                <Plus
+                    size={14}
+                    strokeWidth={2}
+                />
 
-                {/* Filter */}
-                <button
-                    type="button"
-                    className="flex h-8 w-8 items-center justify-center rounded-md border border-border hover:bg-surface-muted"
-                    aria-label="Filter tasks"
-                >
-                    <SlidersHorizontal size={14} strokeWidth={2} />
-                </button>
-
-                {/* Add Task */}
-                <button
-                    type="button"
-                    onClick={onAddTask}
-                    className="flex h-8 items-center gap-1.5 rounded-md bg-black px-3 text-xs font-medium text-white transition-colors hover:bg-neutral-800"
-                >
-                    <Plus size={14} strokeWidth={2} />
-                    <span>Add Task</span>
-                </button>
-            </div>
-
+                <span>Add Task</span>
+            </button>
         </div>
     );
 }
