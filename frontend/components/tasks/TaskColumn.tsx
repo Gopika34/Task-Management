@@ -1,10 +1,14 @@
 import {
+    Plus,
     GripVertical,
     MoreHorizontal,
-    Plus,
 } from "lucide-react";
 
-import type { Task, TaskStatus } from "./task-data";
+import type {
+    Task,
+    TaskStatus,
+} from "./task-data";
+
 import TaskCard from "./TaskCard";
 
 type TaskColumnProps = {
@@ -19,46 +23,64 @@ export default function TaskColumn({
     tasks,
 }: TaskColumnProps) {
     return (
-        <section className="w-[228px] shrink-0 rounded-lg border border-border bg-surface-muted p-2">
+        <section className="flex w-[240px] shrink-0 flex-col">
+
             {/* Column Header */}
-            <div className="flex h-7 items-center justify-between px-1">
-                <div className="flex min-w-0 items-center gap-1.5">
-                    <GripVertical
-                        size={12}
-                        strokeWidth={1.8}
-                        className="shrink-0 text-text-muted"
-                    />
+            <div className="mb-2 flex h-7 items-center justify-between px-1">
 
-                    <h2 className="truncate text-[11px] font-semibold text-text-primary">
-                        {title}
-                    </h2>
+                <div className="flex items-center gap-2">
 
-                    <span className="text-[10px] font-medium text-text-muted">
+                    <div className="flex items-center gap-1.5">
+
+                        <GripVertical
+                            size={12}
+                            strokeWidth={1.8}
+                            className="text-text-muted"
+                        />
+
+                        <h2 className="text-xs font-semibold text-text-primary">
+                            {title}
+                        </h2>
+
+                    </div>
+
+                    <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-surface-muted px-1.5 text-[10px] font-medium text-text-muted">
                         {tasks.length}
                     </span>
+
                 </div>
 
-                <div className="flex items-center gap-0.5">
+                <div className="flex items-center">
+
                     <button
                         type="button"
-                        className="flex h-6 w-6 items-center justify-center rounded text-text-muted hover:bg-surface hover:text-text-primary"
+                        className="flex h-6 w-6 items-center justify-center rounded-md text-text-muted hover:bg-surface-muted hover:text-text-primary"
                         aria-label={`Add task to ${title}`}
                     >
-                        <Plus size={14} strokeWidth={1.8} />
+                        <Plus
+                            size={14}
+                            strokeWidth={1.8}
+                        />
                     </button>
 
                     <button
                         type="button"
-                        className="flex h-6 w-6 items-center justify-center rounded text-text-muted hover:bg-surface hover:text-text-primary"
+                        className="flex h-6 w-6 items-center justify-center rounded-md text-text-muted hover:bg-surface-muted hover:text-text-primary"
                         aria-label={`More options for ${title}`}
                     >
-                        <MoreHorizontal size={14} strokeWidth={1.8} />
+                        <MoreHorizontal
+                            size={14}
+                            strokeWidth={1.8}
+                        />
                     </button>
+
                 </div>
+
             </div>
 
-            {/* Task Cards */}
-            <div className="mt-1 flex flex-col gap-2">
+            {/* Column body */}
+            <div className="flex min-h-[120px] flex-col gap-2 rounded-lg bg-surface-muted/60 p-2">
+
                 {tasks.length > 0 ? (
                     tasks.map((task) => (
                         <TaskCard
@@ -67,24 +89,26 @@ export default function TaskColumn({
                         />
                     ))
                 ) : (
-                    <div className="flex min-h-[80px] items-center justify-center rounded-md border border-dashed border-border bg-surface text-[10px] text-text-muted">
+                    <div className="flex min-h-[100px] items-center justify-center text-xs text-text-muted">
                         No tasks
                     </div>
                 )}
+
+                {/* Add Task */}
+                <button
+                    type="button"
+                    className="flex items-center gap-1.5 px-1 py-1.5 text-[10px] text-text-secondary hover:text-text-primary"
+                >
+                    <Plus
+                        size={12}
+                        strokeWidth={1.8}
+                    />
+
+                    <span>Add Task</span>
+                </button>
+
             </div>
 
-            {/* Add Task */}
-            <button
-                type="button"
-                className="mt-1 flex h-8 w-full items-center gap-1.5 rounded-md px-1.5 text-[10px] text-text-secondary hover:bg-surface hover:text-text-primary"
-            >
-                <Plus
-                    size={13}
-                    strokeWidth={1.8}
-                />
-
-                <span>Add Task</span>
-            </button>
         </section>
     );
 }

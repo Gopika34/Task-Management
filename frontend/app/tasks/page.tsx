@@ -1,34 +1,55 @@
+"use client";
+
+import { useState } from "react";
+
 import AppShell from "@/components/layout/AppShell";
+
 import TaskBoard from "@/components/tasks/TaskBoard";
+
+import TaskList from "@/components/tasks/TaskList";
+
 import TaskToolbar from "@/components/tasks/TaskToolbar";
+
 import TasksHeader from "@/components/tasks/TasksHeader";
+
 import { initialTasks } from "@/components/tasks/task-data";
 
+import type { ViewMode } from "@/components/tasks/ViewToggle";
+
 export default function TasksPage() {
+    const [viewMode, setViewMode] = useState<ViewMode>("board");
+
     return (
         <AppShell>
+
             <div className="min-h-screen bg-background">
 
-                {/* Top application header */}
+                {/* Existing page header */}
                 <TasksHeader />
 
-                {/* Tasks header + toolbar */}
-                <section className="flex items-center justify-between border-b border-border px-4 py-3">
+                {/* Toolbar */}
+                <TaskToolbar
+                    viewMode={viewMode}
+                    onViewChange={setViewMode}
+                />
 
-                    <h1 className="text-md font-semibold text-text-primary">
-                        Tasks
-                    </h1>
+                {/* Main content */}
+                <main className="px-6 py-5">
 
-                    <TaskToolbar />
+                    {viewMode === "board" ? (
+                        <TaskBoard
+                            tasks={initialTasks}
+                        />
+                    ) : (
+                        <TaskList
+                            tasks={initialTasks}
+                        />
+                    )}
 
-                </section>
-
-                {/* Task board */}
-                <main className="overflow-x-auto px-4 py-4">
-                    <TaskBoard tasks={initialTasks} />
                 </main>
 
             </div>
+
         </AppShell>
     );
 }
