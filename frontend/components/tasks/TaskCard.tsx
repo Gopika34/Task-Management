@@ -1,4 +1,9 @@
-import { CalendarDays, MoreHorizontal } from "lucide-react";
+import {
+    CalendarDays,
+    MoreHorizontal,
+    Tag,
+} from "lucide-react";
+
 import type { Task } from "./task-data";
 
 type TaskCardProps = {
@@ -6,35 +11,48 @@ type TaskCardProps = {
 };
 
 const priorityStyles = {
-    low: "bg-gray-100 text-gray-600",
-    medium: "bg-yellow-100 text-yellow-700",
-    high: "bg-red-100 text-red-700",
+    low: "text-gray-500",
+    medium: "text-orange-500",
+    high: "text-red-500",
 };
 
 export default function TaskCard({ task }: TaskCardProps) {
     return (
-        <article className="group rounded-lg border border-border bg-surface p-3 transition-shadow hover:shadow-sm">
-            {/* Top row */}
-            <div className="flex items-start justify-between gap-3">
-                <h3 className="text-sm font-medium leading-5 text-text-primary">
+        <article className="group rounded-md border border-border bg-surface px-2.5 py-2.5 transition-shadow hover:shadow-sm">
+            {/* Task title */}
+            <div className="flex items-start justify-between gap-2">
+                <h3 className="min-w-0 flex-1 text-[12px] font-medium leading-4 text-text-primary">
                     {task.title}
-                </h3>
-
+                </h3>F
                 <button
                     type="button"
-                    className="rounded p-1 text-text-muted opacity-0 transition-opacity hover:bg-surface-muted group-hover:opacity-100"
+                    className="flex h-5 w-5 shrink-0 items-center justify-center rounded text-text-muted  hover:bg-surface-muted group-hover:opacity-100"
                     aria-label={`More options for ${task.title}`}
                 >
-                    <MoreHorizontal size={16} />
+                    <MoreHorizontal size={14} />
                 </button>
             </div>
 
-            {/* Description */}
-            {task.description && (
-                <p className="mt-2 line-clamp-2 text-xs leading-5 text-text-secondary">
-                    {task.description}
-                </p>
-            )}
+            {/* Assignee + Due date */}
+            <div className="mt-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                    {/* Avatar */}
+                    <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-purple-100 text-[9px] font-semibold text-purple-700">
+                        {task.assignee}
+                    </div>
+
+                    <span className="text-[10px] text-text-secondary">
+                        Admin
+                    </span>
+                </div>
+
+                {task.dueDate && (
+                    <span className="flex items-center gap-1 rounded-md bg-red-50 px-1.5 py-1 text-[9px] font-medium text-red-500">
+                        <CalendarDays size={10} strokeWidth={1.8} />
+                        {task.dueDate}
+                    </span>
+                )}
+            </div>
 
             {/* Labels */}
             {task.labels.length > 0 && (
@@ -42,37 +60,23 @@ export default function TaskCard({ task }: TaskCardProps) {
                     {task.labels.map((label) => (
                         <span
                             key={label}
-                            className="rounded bg-surface-muted px-2 py-1 text-[10px] font-medium text-text-secondary"
+                            className="flex items-center gap-1 rounded-md border border-border bg-surface-muted px-1.5 py-1 text-[9px] text-text-secondary"
                         >
+                            <Tag size={10} strokeWidth={1.8}/>
                             {label}
                         </span>
                     ))}
                 </div>
             )}
 
-            {/* Bottom row */}
-            <div className="mt-4 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <span
-                        className={`rounded px-2 py-1 text-[10px] font-medium capitalize ${priorityStyles[task.priority]
-                            }`}
-                    >
-                        {task.priority}
-                    </span>
-
-                    {task.dueDate && (
-                        <span className="flex items-center gap-1 text-[10px] text-text-muted">
-                            <CalendarDays size={12} />
-                            {task.dueDate}
-                        </span>
-                    )}
-                </div>
-
-                {/* Assignee */}
-                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-purple-100 text-[10px] font-semibold text-purple-700">
-                    {task.assignee}
-                </div>
-            </div>
+            {/* Priority */}
+            {/* <div
+                className={`mt-2 text-[9px] font-medium capitalize ${
+                    priorityStyles[task.priority]
+                }`}
+            >
+                {task.priority} priority
+            </div> */}
         </article>
     );
 }

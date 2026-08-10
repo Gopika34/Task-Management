@@ -1,4 +1,9 @@
-import { Plus } from "lucide-react";
+import {
+    GripVertical,
+    MoreHorizontal,
+    Plus,
+} from "lucide-react";
+
 import type { Task, TaskStatus } from "./task-data";
 import TaskCard from "./TaskCard";
 
@@ -14,40 +19,72 @@ export default function TaskColumn({
     tasks,
 }: TaskColumnProps) {
     return (
-        <section className="flex w-[228px] shrink-0 flex-col">
-            {/* Column header */}
-            <div className="mb-3 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <h2 className="text-sm font-semibold text-text-primary">
+        <section className="w-[228px] shrink-0 rounded-lg border border-border bg-surface-muted p-2">
+            {/* Column Header */}
+            <div className="flex h-7 items-center justify-between px-1">
+                <div className="flex min-w-0 items-center gap-1.5">
+                    <GripVertical
+                        size={12}
+                        strokeWidth={1.8}
+                        className="shrink-0 text-text-muted"
+                    />
+
+                    <h2 className="truncate text-[11px] font-semibold text-text-primary">
                         {title}
                     </h2>
 
-                    <span className="rounded-full bg-surface-muted px-2 py-0.5 text-[10px] font-medium text-text-muted">
+                    <span className="text-[10px] font-medium text-text-muted">
                         {tasks.length}
                     </span>
                 </div>
 
-                <button
-                    type="button"
-                    className="rounded p-1.5 text-text-muted hover:bg-surface-muted hover:text-text-primary"
-                    aria-label={`Add task to ${title}`}
-                >
-                    <Plus size={16} />
-                </button>
+                <div className="flex items-center gap-0.5">
+                    <button
+                        type="button"
+                        className="flex h-6 w-6 items-center justify-center rounded text-text-muted hover:bg-surface hover:text-text-primary"
+                        aria-label={`Add task to ${title}`}
+                    >
+                        <Plus size={14} strokeWidth={1.8} />
+                    </button>
+
+                    <button
+                        type="button"
+                        className="flex h-6 w-6 items-center justify-center rounded text-text-muted hover:bg-surface hover:text-text-primary"
+                        aria-label={`More options for ${title}`}
+                    >
+                        <MoreHorizontal size={14} strokeWidth={1.8} />
+                    </button>
+                </div>
             </div>
 
-            {/* Tasks */}
-            <div className="flex min-h-[120px] flex-col gap-2 rounded-lg bg-surface-muted/60 p-2">
+            {/* Task Cards */}
+            <div className="mt-1 flex flex-col gap-2">
                 {tasks.length > 0 ? (
                     tasks.map((task) => (
-                        <TaskCard key={task.id} task={task} />
+                        <TaskCard
+                            key={task.id}
+                            task={task}
+                        />
                     ))
                 ) : (
-                    <div className="flex flex-1 items-center justify-center py-8 text-xs text-text-muted">
+                    <div className="flex min-h-[80px] items-center justify-center rounded-md border border-dashed border-border bg-surface text-[10px] text-text-muted">
                         No tasks
                     </div>
                 )}
             </div>
+
+            {/* Add Task */}
+            <button
+                type="button"
+                className="mt-1 flex h-8 w-full items-center gap-1.5 rounded-md px-1.5 text-[10px] text-text-secondary hover:bg-surface hover:text-text-primary"
+            >
+                <Plus
+                    size={13}
+                    strokeWidth={1.8}
+                />
+
+                <span>Add Task</span>
+            </button>
         </section>
     );
 }
