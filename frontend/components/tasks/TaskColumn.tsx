@@ -15,6 +15,7 @@ type TaskColumnProps = {
     status: TaskStatus;
     tasks: Task[];
     visibleFields: TaskField[];
+    onAddTask: (status: TaskStatus) => void;
 };
 
 export default function TaskColumn({
@@ -22,6 +23,7 @@ export default function TaskColumn({
     status,
     tasks,
     visibleFields,
+    onAddTask,
 }: TaskColumnProps) {
     return (
         <section className="flex w-[240px] shrink-0 flex-col rounded-lg bg-gray-400/20 p-2">
@@ -50,6 +52,7 @@ export default function TaskColumn({
 
                     <button
                         type="button"
+                        onClick={() => onAddTask(status)}
                         className="flex h-6 w-6 items-center justify-center rounded-md text-text-muted hover:bg-surface-muted hover:text-text-primary"
                         aria-label={`Add task to ${title}`}
                     >
@@ -94,6 +97,7 @@ export default function TaskColumn({
                 {/* Add Task */}
                 <button
                     type="button"
+                    onClick={() => onAddTask(status)}
                     className="flex items-center gap-1.5 px-1 py-1.5 text-[10px] text-text-secondary hover:text-text-primary"
                 >
                     <Plus

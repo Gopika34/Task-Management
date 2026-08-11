@@ -3,22 +3,25 @@
 import { useMemo, useState } from "react";
 
 import AppShell from "@/components/layout/AppShell";
-
 import TaskBoard from "@/components/tasks/TaskBoard";
-
 import TaskList from "@/components/tasks/TaskList";
-
 import TaskToolbar from "@/components/tasks/TaskToolbar";
-
 import TasksHeader from "@/components/tasks/TasksHeader";
-
-import { initialTasks } from "@/components/tasks/task-data";
-
+import {
+    initialTasks,
+    type Task,
+    type TaskStatus,
+} from "@/components/tasks/task-data";
 import type { ViewMode } from "@/components/tasks/ViewToggle";
 import type { TaskField } from "@/components/tasks/TaskToolbar";
+import AddTaskModal from "@/components/tasks/AddTaskModal";
+
 
 export default function TasksPage() {
     const [viewMode, setViewMode] = useState<ViewMode>("board");
+    const [tasks, setTasks] = useState(initialTasks);
+    const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+    const [newTaskStatus, setNewTaskStatus] = useState<TaskStatus>("todo");
     const [searchQuery, setSearchQuery] = useState("");
     const [visibleFields, setVisibleFields] = useState<TaskField[]>([
         "members",
@@ -30,13 +33,13 @@ export default function TasksPage() {
         const query = searchQuery.trim().toLowerCase();
 
         if (!query) {
-            return initialTasks;
+            return tasks;
         }
 
-        return initialTasks.filter((task) =>
+        return tasks.filter((task) =>
             task.title.toLowerCase().includes(query)
         );
-    }, [searchQuery]);
+    }, [tasks, searchQuery]);
 
     const toggleField = (field: TaskField) => {
         setVisibleFields((currentFields) => {
@@ -50,6 +53,16 @@ export default function TasksPage() {
         });
     };
 
+    const openTaskModal = (status: TaskStatus = "todo") => {
+        setNewTaskStatus(status);
+        setIsTaskModalOpen(true);
+    };
+    const handleCreateTask = (task: Task) => {
+        setTasks((currentTasks) => [
+            ...currentTasks,
+            task,
+        ]);
+    };
     return (
         <AppShell>
 
@@ -66,6 +79,7 @@ export default function TasksPage() {
                     onSearchChange={setSearchQuery}
                     visibleFields={visibleFields}
                     onFieldToggle={toggleField}
+                    onAddTask={() => openTaskModal("todo")}
                 />
 
                 {/* Main content */}
@@ -74,6 +88,7 @@ export default function TasksPage() {
                         <TaskBoard
                             tasks={filteredTasks}
                             visibleFields={visibleFields}
+                            onAddTask={openTaskModal}
                         />
                     ) : (
                         <TaskList
@@ -86,6 +101,12 @@ export default function TasksPage() {
 
             </div>
 
+            <AddTaskModal
+                isOpen={isTaskModalOpen}
+                onClose={() => setIsTaskModalOpen(false)}
+                onCreate={handleCreateTask}
+                defaultStatus={newTaskStatus}
+            />
         </AppShell>
     );
 }

@@ -32,6 +32,8 @@ type TaskToolbarProps = {
 
     visibleFields: TaskField[];
     onFieldToggle: (field: TaskField) => void;
+
+    onAddTask: () => void;
 };
 
 export default function TaskToolbar({
@@ -41,6 +43,7 @@ export default function TaskToolbar({
     onSearchChange,
     visibleFields,
     onFieldToggle,
+    onAddTask,
 }: TaskToolbarProps) {
     const [fieldsOpen, setFieldsOpen] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
@@ -84,10 +87,15 @@ export default function TaskToolbar({
                 {/* Search */}
                 <div
                     className={`flex h-8 items-center rounded-md border border-border bg-background transition-all duration-200 ${searchOpen
-                            ? "w-56 px-2.5"
-                            : "w-8 justify-center px-0"
+                        ? "w-56 px-2.5"
+                        : "w-8 justify-center px-0"
                         }`}
                     onMouseEnter={() => setSearchOpen(true)}
+                    onMouseLeave={() => {
+                        if (!searchQuery) {
+                            setSearchOpen(false);
+                        }
+                    }}
                 >
                     <button
                         type="button"
@@ -199,6 +207,7 @@ export default function TaskToolbar({
                 {/* Add Task */}
                 <button
                     type="button"
+                    onClick={onAddTask}
                     className="flex h-8 items-center gap-1.5 rounded-md bg-black px-3 text-xs font-medium text-white transition-colors hover:bg-neutral-800"
                 >
                     <Plus size={14} strokeWidth={2} />

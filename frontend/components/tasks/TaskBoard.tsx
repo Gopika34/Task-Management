@@ -9,6 +9,7 @@ import TaskColumn from "./TaskColumn";
 type TaskBoardProps = {
     tasks: Task[];
     visibleFields: TaskField[];
+    onAddTask: (status: TaskStatus) => void;
 };
 
 const columns: {
@@ -36,6 +37,7 @@ const columns: {
 export default function TaskBoard({
     tasks,
     visibleFields,
+    onAddTask,
 }: TaskBoardProps) {
     return (
         <div className="w-full overflow-x-auto pb-4">
@@ -54,6 +56,7 @@ export default function TaskBoard({
                             status={column.status}
                             tasks={columnTasks}
                             visibleFields={visibleFields}
+                            onAddTask={onAddTask}
                         />
                     );
                 })}
