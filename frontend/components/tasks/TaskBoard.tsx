@@ -2,11 +2,13 @@ import type {
     Task,
     TaskStatus,
 } from "./task-data";
+import type { TaskField } from "./TaskToolbar";
 
 import TaskColumn from "./TaskColumn";
 
 type TaskBoardProps = {
     tasks: Task[];
+    visibleFields: TaskField[];
 };
 
 const columns: {
@@ -33,6 +35,7 @@ const columns: {
 
 export default function TaskBoard({
     tasks,
+    visibleFields,
 }: TaskBoardProps) {
     return (
         <div className="w-full overflow-x-auto pb-4">
@@ -50,6 +53,7 @@ export default function TaskBoard({
                             title={column.title}
                             status={column.status}
                             tasks={columnTasks}
+                            visibleFields={visibleFields}
                         />
                     );
                 })}

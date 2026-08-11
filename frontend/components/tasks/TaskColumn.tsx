@@ -3,27 +3,28 @@ import {
     GripVertical,
     MoreHorizontal,
 } from "lucide-react";
-
+import type { TaskField } from "./TaskToolbar";
 import type {
     Task,
     TaskStatus,
 } from "./task-data";
-
 import TaskCard from "./TaskCard";
 
 type TaskColumnProps = {
     title: string;
     status: TaskStatus;
     tasks: Task[];
+    visibleFields: TaskField[];
 };
 
 export default function TaskColumn({
     title,
     status,
     tasks,
+    visibleFields,
 }: TaskColumnProps) {
     return (
-        <section className="flex w-[240px] shrink-0 flex-col">
+        <section className="flex w-[240px] shrink-0 flex-col rounded-lg bg-gray-400/20 p-2">
 
             {/* Column Header */}
             <div className="mb-2 flex h-7 items-center justify-between px-1">
@@ -43,11 +44,6 @@ export default function TaskColumn({
                         </h2>
 
                     </div>
-
-                    <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-surface-muted px-1.5 text-[10px] font-medium text-text-muted">
-                        {tasks.length}
-                    </span>
-
                 </div>
 
                 <div className="flex items-center">
@@ -79,13 +75,14 @@ export default function TaskColumn({
             </div>
 
             {/* Column body */}
-            <div className="flex min-h-[120px] flex-col gap-2 rounded-lg bg-surface-muted/60 p-2">
+            <div className="flex min-h-[120px] flex-col gap-2">
 
                 {tasks.length > 0 ? (
                     tasks.map((task) => (
                         <TaskCard
                             key={task.id}
                             task={task}
+                            visibleFields={visibleFields}
                         />
                     ))
                 ) : (

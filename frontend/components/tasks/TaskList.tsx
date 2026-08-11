@@ -1,14 +1,15 @@
 import {
     MoreHorizontal,
 } from "lucide-react";
-
 import type {
     Task,
     TaskStatus,
 } from "./task-data";
+import type { TaskField } from "./TaskToolbar";
 
 type TaskListProps = {
     tasks: Task[];
+    visibleFields: TaskField[];
 };
 
 const sections: {
@@ -35,6 +36,7 @@ const sections: {
 
 export default function TaskList({
     tasks,
+    visibleFields,
 }: TaskListProps) {
     return (
         <div className="space-y-6">
@@ -49,6 +51,7 @@ export default function TaskList({
                         key={section.status}
                         title={section.title}
                         tasks={sectionTasks}
+                        visibleFields={visibleFields}
                     />
                 );
             })}
@@ -60,15 +63,23 @@ export default function TaskList({
 type TaskListSectionProps = {
     title: string;
     tasks: Task[];
+    visibleFields: TaskField[];
 };
 
 function TaskListSection({
     title,
     tasks,
+    visibleFields,
 }: TaskListSectionProps) {
+    const showPriority = visibleFields.includes("priority");
+    const showMembers = visibleFields.includes("members");
+    const showDueDate = visibleFields.includes("dueDate");
+    const showLabels = visibleFields.includes("labels");
+    const showStatus = visibleFields.includes("status");
+    const showReporter = visibleFields.includes("reporter");
+
     return (
         <section>
-
             {/* Section heading */}
             <div className="mb-2 flex items-center gap-2">
                 <h2 className="text-sm font-semibold text-text-primary">
@@ -80,50 +91,98 @@ function TaskListSection({
                 </span>
             </div>
 
-            {/* Table */}
-            <div className="overflow-hidden rounded-lg border border-border">
+            {/* Horizontal scroll */}
+            <div className="overflow-x-auto rounded-lg border border-border">
 
-                {/* Header */}
-                <div className="grid grid-cols-[minmax(220px,1fr)_110px_110px_120px_40px] border-b border-border bg-surface-muted px-4 py-2.5 text-[10px] font-medium text-text-muted">
+                <div className="min-w-[650px]">
 
-                    <span>Task</span>
+                    {/* Header */}
+                    <div
+                        className="grid items-center border-b border-border bg-surface-muted px-4 py-2.5 text-[10px] font-medium text-text-muted"
+                        style={{
+                            gridTemplateColumns: `
+                                minmax(220px, 1fr)
+                                ${showPriority ? "110px" : ""}
+                                ${showMembers ? "110px" : ""}
+                                ${showDueDate ? "120px" : ""}
+                                ${showLabels ? "150px" : ""}
+                                ${showStatus ? "110px" : ""}
+                                ${showReporter ? "120px" : ""}
+                                40px
+                            `,
+                        }}
+                    >
+                        <span>Task</span>
 
-                    <span>Priority</span>
+                        {showPriority && <span>Priority</span>}
 
-                    <span>Members</span>
+                        {showMembers && <span>Members</span>}
 
-                    <span>Due Date</span>
+                        {showDueDate && <span>Due Date</span>}
 
-                    <span>Actions</span>
+                        {showLabels && <span>Labels</span>}
+
+                        {showStatus && <span>Status</span>}
+
+                        {showReporter && <span>Reporter</span>}
+
+                        <span>Actions</span>
+                    </div>
+
+                    {/* Rows */}
+                    {tasks.length > 0 ? (
+                        tasks.map((task) => (
+                            <TaskListRow
+                                key={task.id}
+                                task={task}
+                                visibleFields={visibleFields}
+                            />
+                        ))
+                    ) : (
+                        <div className="px-4 py-5 text-xs text-text-muted">
+                            No tasks
+                        </div>
+                    )}
 
                 </div>
-
-                {/* Rows */}
-                {tasks.length > 0 ? (
-                    tasks.map((task) => (
-                        <TaskListRow
-                            key={task.id}
-                            task={task}
-                        />
-                    ))
-                ) : (
-                    <div className="px-4 py-5 text-xs text-text-muted">
-                        No tasks
-                    </div>
-                )}
 
             </div>
         </section>
     );
 }
 
+
+
 function TaskListRow({
     task,
+    visibleFields,
 }: {
     task: Task;
+    visibleFields: TaskField[];
 }) {
+    const showPriority = visibleFields.includes("priority");
+    const showMembers = visibleFields.includes("members");
+    const showDueDate = visibleFields.includes("dueDate");
+    const showLabels = visibleFields.includes("labels");
+    const showStatus = visibleFields.includes("status");
+    const showReporter = visibleFields.includes("reporter");
+
     return (
-        <div className="grid grid-cols-[minmax(220px,1fr)_110px_110px_120px_40px] items-center border-b border-border px-4 py-2.5 last:border-b-0">
+        <div
+            className="grid items-center border-b border-border px-4 py-2.5 last:border-b-0"
+            style={{
+                gridTemplateColumns: `
+                    minmax(220px, 1fr)
+                    ${showPriority ? "110px" : ""}
+                    ${showMembers ? "110px" : ""}
+                    ${showDueDate ? "120px" : ""}
+                    ${showLabels ? "150px" : ""}
+                    ${showStatus ? "110px" : ""}
+                    ${showReporter ? "120px" : ""}
+                    40px
+                `,
+            }}
+        >
 
             {/* Task */}
             <div className="min-w-0">
@@ -133,23 +192,59 @@ function TaskListRow({
             </div>
 
             {/* Priority */}
-            <div>
-                <PriorityBadge priority={task.priority} />
-            </div>
-
-            {/* Member */}
-            <div className="flex items-center gap-2">
-
-                <div className="flex h-5 w-5 items-center justify-center rounded-full bg-purple-100 text-[9px] font-semibold text-purple-700">
-                    {task.assignee}
+            {showPriority && (
+                <div>
+                    <PriorityBadge priority={task.priority} />
                 </div>
+            )}
 
-            </div>
+            {/* Members */}
+            {showMembers && (
+                <div className="flex items-center gap-2">
+                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-purple-100 text-[9px] font-semibold text-purple-700">
+                        {task.assignee}
+                    </div>
 
-            {/* Due date */}
-            <span className="text-xs text-text-secondary">
-                {task.dueDate || "-"}
-            </span>
+                    <span className="text-xs text-text-secondary">
+                        Admin
+                    </span>
+                </div>
+            )}
+
+            {/* Due Date */}
+            {showDueDate && (
+                <span className="text-xs text-text-secondary">
+                    {task.dueDate || "-"}
+                </span>
+            )}
+
+            {/* Labels */}
+            {showLabels && (
+                <div className="flex flex-wrap gap-1">
+                    {task.labels.map((label) => (
+                        <span
+                            key={label}
+                            className="rounded-md bg-surface-muted px-1.5 py-1 text-[9px] text-text-secondary"
+                        >
+                            {label}
+                        </span>
+                    ))}
+                </div>
+            )}
+
+            {/* Status */}
+            {showStatus && (
+                <span className="text-xs capitalize text-text-secondary">
+                    {task.status.replace("-", " ")}
+                </span>
+            )}
+
+            {/* Reporter */}
+            {showReporter && (
+                <span className="text-xs text-text-secondary">
+                    Admin
+                </span>
+            )}
 
             {/* Actions */}
             <button

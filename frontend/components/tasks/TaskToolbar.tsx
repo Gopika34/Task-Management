@@ -1,6 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import {
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import {
     Search,
     SlidersHorizontal,
@@ -11,19 +15,61 @@ import {
 
 import ViewToggle, { type ViewMode } from "./ViewToggle";
 
+export type TaskField =
+    | "priority"
+    | "members"
+    | "dueDate"
+    | "labels"
+    | "status"
+    | "reporter";
+
 type TaskToolbarProps = {
     viewMode: ViewMode;
     onViewChange: (mode: ViewMode) => void;
+
     searchQuery: string;
     onSearchChange: (value: string) => void;
+
+    visibleFields: TaskField[];
+    onFieldToggle: (field: TaskField) => void;
 };
+
 export default function TaskToolbar({
     viewMode,
     onViewChange,
     searchQuery,
     onSearchChange,
+    visibleFields,
+    onFieldToggle,
 }: TaskToolbarProps) {
     const [fieldsOpen, setFieldsOpen] = useState(false);
+    const [searchOpen, setSearchOpen] = useState(false);
+    const fieldsRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                fieldsRef.current &&
+                !fieldsRef.current.contains(event.target as Node)
+            ) {
+                setFieldsOpen(false);
+            }
+        };
+
+        const handleEscape = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                setFieldsOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("keydown", handleEscape);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("keydown", handleEscape);
+        };
+    }, []);
 
     return (
         <div className="relative flex items-center justify-between border-b border-border px-6 py-3">
@@ -36,24 +82,44 @@ export default function TaskToolbar({
             <div className="flex items-center gap-2">
 
                 {/* Search */}
-                <div className="flex h-8 w-56 items-center gap-2 rounded-md border border-border bg-background px-2.5">
-                    <Search
-                        size={14}
-                        strokeWidth={1.8}
-                        className="shrink-0 text-text-muted"
-                    />
+                <div
+                    className={`flex h-8 items-center rounded-md border border-border bg-background transition-all duration-200 ${searchOpen
+                            ? "w-56 px-2.5"
+                            : "w-8 justify-center px-0"
+                        }`}
+                    onMouseEnter={() => setSearchOpen(true)}
+                >
+                    <button
+                        type="button"
+                        onClick={() => setSearchOpen(true)}
+                        className="flex h-7 w-7 shrink-0 items-center justify-center text-text-secondary hover:text-text-primary"
+                        aria-label="Search tasks"
+                    >
+                        <Search
+                            size={14}
+                            strokeWidth={1.8}
+                        />
+                    </button>
 
-                    <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={(event) => onSearchChange(event.target.value)}
-                        placeholder="Search tasks..."
-                        className="w-full bg-transparent text-xs text-text-primary outline-none placeholder:text-text-muted"
-                    />
+                    {searchOpen && (
+                        <input
+                            autoFocus
+                            type="text"
+                            value={searchQuery}
+                            onChange={(event) => onSearchChange(event.target.value)}
+                            onBlur={() => {
+                                if (!searchQuery) {
+                                    setSearchOpen(false);
+                                }
+                            }}
+                            placeholder="Search tasks..."
+                            className="ml-1 w-full bg-transparent text-xs text-text-primary outline-none placeholder:text-text-muted"
+                        />
+                    )}
                 </div>
 
                 {/* Fields */}
-                <div className="relative">
+                <div ref={fieldsRef} className="relative">
                     <button
                         type="button"
                         onClick={() => setFieldsOpen((open) => !open)}
@@ -80,35 +146,40 @@ export default function TaskToolbar({
 
                             {/* Fields */}
                             <div className="space-y-1">
-
                                 <FieldOption
                                     label="Priority"
-                                    checked={false}
+                                    checked={visibleFields.includes("priority")}
+                                    onClick={() => onFieldToggle("priority")}
                                 />
 
                                 <FieldOption
                                     label="Members"
-                                    checked={true}
+                                    checked={visibleFields.includes("members")}
+                                    onClick={() => onFieldToggle("members")}
                                 />
 
                                 <FieldOption
                                     label="Due Date"
-                                    checked={false}
+                                    checked={visibleFields.includes("dueDate")}
+                                    onClick={() => onFieldToggle("dueDate")}
                                 />
 
                                 <FieldOption
                                     label="Labels"
-                                    checked={false}
+                                    checked={visibleFields.includes("labels")}
+                                    onClick={() => onFieldToggle("labels")}
                                 />
 
                                 <FieldOption
                                     label="Status"
-                                    checked={false}
+                                    checked={visibleFields.includes("status")}
+                                    onClick={() => onFieldToggle("status")}
                                 />
 
                                 <FieldOption
                                     label="Reporter"
-                                    checked={false}
+                                    checked={visibleFields.includes("reporter")}
+                                    onClick={() => onFieldToggle("reporter")}
                                 />
 
                             </div>
@@ -142,15 +213,18 @@ export default function TaskToolbar({
 type FieldOptionProps = {
     label: string;
     checked: boolean;
+    onClick: () => void;
 };
 
 function FieldOption({
     label,
     checked,
+    onClick,
 }: FieldOptionProps) {
     return (
         <button
             type="button"
+            onClick={onClick}
             className="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-xs text-text-secondary hover:bg-surface-muted hover:text-text-primary"
         >
             <span>{label}</span>

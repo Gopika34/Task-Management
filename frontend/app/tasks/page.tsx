@@ -15,10 +15,16 @@ import TasksHeader from "@/components/tasks/TasksHeader";
 import { initialTasks } from "@/components/tasks/task-data";
 
 import type { ViewMode } from "@/components/tasks/ViewToggle";
+import type { TaskField } from "@/components/tasks/TaskToolbar";
 
 export default function TasksPage() {
     const [viewMode, setViewMode] = useState<ViewMode>("board");
     const [searchQuery, setSearchQuery] = useState("");
+    const [visibleFields, setVisibleFields] = useState<TaskField[]>([
+        "members",
+        "dueDate",
+        "labels",
+    ]);
 
     const filteredTasks = useMemo(() => {
         const query = searchQuery.trim().toLowerCase();
@@ -31,6 +37,18 @@ export default function TasksPage() {
             task.title.toLowerCase().includes(query)
         );
     }, [searchQuery]);
+
+    const toggleField = (field: TaskField) => {
+        setVisibleFields((currentFields) => {
+            if (currentFields.includes(field)) {
+                return currentFields.filter(
+                    (currentField) => currentField !== field
+                );
+            }
+
+            return [...currentFields, field];
+        });
+    };
 
     return (
         <AppShell>
@@ -46,18 +64,21 @@ export default function TasksPage() {
                     onViewChange={setViewMode}
                     searchQuery={searchQuery}
                     onSearchChange={setSearchQuery}
+                    visibleFields={visibleFields}
+                    onFieldToggle={toggleField}
                 />
 
                 {/* Main content */}
-                <main className="px-6 py-5">
-
+                <main className="min-w-0 px-6 py-5">
                     {viewMode === "board" ? (
                         <TaskBoard
                             tasks={filteredTasks}
+                            visibleFields={visibleFields}
                         />
                     ) : (
                         <TaskList
                             tasks={filteredTasks}
+                            visibleFields={visibleFields}
                         />
                     )}
 
