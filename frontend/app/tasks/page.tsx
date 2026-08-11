@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import AppShell from "@/components/layout/AppShell";
 
@@ -18,6 +18,19 @@ import type { ViewMode } from "@/components/tasks/ViewToggle";
 
 export default function TasksPage() {
     const [viewMode, setViewMode] = useState<ViewMode>("board");
+    const [searchQuery, setSearchQuery] = useState("");
+
+    const filteredTasks = useMemo(() => {
+        const query = searchQuery.trim().toLowerCase();
+
+        if (!query) {
+            return initialTasks;
+        }
+
+        return initialTasks.filter((task) =>
+            task.title.toLowerCase().includes(query)
+        );
+    }, [searchQuery]);
 
     return (
         <AppShell>
@@ -31,6 +44,8 @@ export default function TasksPage() {
                 <TaskToolbar
                     viewMode={viewMode}
                     onViewChange={setViewMode}
+                    searchQuery={searchQuery}
+                    onSearchChange={setSearchQuery}
                 />
 
                 {/* Main content */}
@@ -38,11 +53,11 @@ export default function TasksPage() {
 
                     {viewMode === "board" ? (
                         <TaskBoard
-                            tasks={initialTasks}
+                            tasks={filteredTasks}
                         />
                     ) : (
                         <TaskList
-                            tasks={initialTasks}
+                            tasks={filteredTasks}
                         />
                     )}
 

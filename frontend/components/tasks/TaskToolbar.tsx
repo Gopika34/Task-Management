@@ -14,11 +14,14 @@ import ViewToggle, { type ViewMode } from "./ViewToggle";
 type TaskToolbarProps = {
     viewMode: ViewMode;
     onViewChange: (mode: ViewMode) => void;
+    searchQuery: string;
+    onSearchChange: (value: string) => void;
 };
-
 export default function TaskToolbar({
     viewMode,
     onViewChange,
+    searchQuery,
+    onSearchChange,
 }: TaskToolbarProps) {
     const [fieldsOpen, setFieldsOpen] = useState(false);
 
@@ -33,24 +36,31 @@ export default function TaskToolbar({
             <div className="flex items-center gap-2">
 
                 {/* Search */}
-                <button
-                    type="button"
-                    className="flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background text-text-secondary transition-colors hover:bg-surface-muted hover:text-text-primary"
-                    aria-label="Search tasks"
-                >
-                    <Search size={14} strokeWidth={1.8} />
-                </button>
+                <div className="flex h-8 w-56 items-center gap-2 rounded-md border border-border bg-background px-2.5">
+                    <Search
+                        size={14}
+                        strokeWidth={1.8}
+                        className="shrink-0 text-text-muted"
+                    />
+
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(event) => onSearchChange(event.target.value)}
+                        placeholder="Search tasks..."
+                        className="w-full bg-transparent text-xs text-text-primary outline-none placeholder:text-text-muted"
+                    />
+                </div>
 
                 {/* Fields */}
                 <div className="relative">
                     <button
                         type="button"
                         onClick={() => setFieldsOpen((open) => !open)}
-                        className={`flex h-8 items-center gap-1.5 rounded-md border px-2.5 text-xs transition-colors ${
-                            fieldsOpen
-                                ? "border-border bg-surface-muted text-text-primary"
-                                : "border-border bg-background text-text-secondary hover:bg-surface-muted hover:text-text-primary"
-                        }`}
+                        className={`flex h-8 items-center gap-1.5 rounded-md border px-2.5 text-xs transition-colors ${fieldsOpen
+                            ? "border-border bg-surface-muted text-text-primary"
+                            : "border-border bg-background text-text-secondary hover:bg-surface-muted hover:text-text-primary"
+                            }`}
                         aria-expanded={fieldsOpen}
                     >
                         <Columns3 size={14} strokeWidth={1.8} />
@@ -146,11 +156,10 @@ function FieldOption({
             <span>{label}</span>
 
             <span
-                className={`flex h-3.5 w-3.5 items-center justify-center rounded ${
-                    checked
-                        ? "bg-black text-white"
-                        : "border border-border bg-background"
-                }`}
+                className={`flex h-3.5 w-3.5 items-center justify-center rounded ${checked
+                    ? "bg-black text-white"
+                    : "border border-border bg-background"
+                    }`}
             >
                 {checked && <Check size={10} strokeWidth={2.5} />}
             </span>
