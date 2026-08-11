@@ -23,7 +23,7 @@ export default function TaskCard({ task }: TaskCardProps) {
             <div className="flex items-start justify-between gap-2">
                 <h3 className="min-w-0 flex-1 text-[12px] font-medium leading-4 text-text-primary">
                     {task.title}
-                </h3>F
+                </h3>
                 <button
                     type="button"
                     className="flex h-5 w-5 shrink-0 items-center justify-center rounded text-text-muted  hover:bg-surface-muted group-hover:opacity-100"
